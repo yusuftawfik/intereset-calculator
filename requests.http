@@ -1,0 +1,89 @@
+### Check the app is running
+GET http://localhost:8080/api/status
+
+### Simple: find amount and interest (slide example 1) -> interest 1120, amount 9120
+POST http://localhost:8080/api/simple
+Content-Type: application/json
+
+{
+  "find": "AMOUNT",
+  "principal": 8000,
+  "rate": 7,
+  "time": 2,
+  "unit": 1
+}
+
+### Simple: time given in days (slide example 3) -> interest about 427.78
+POST http://localhost:8080/api/simple
+Content-Type: application/json
+
+{
+  "find": "AMOUNT",
+  "principal": 10000,
+  "rate": 10,
+  "time": 154,
+  "unit": 4
+}
+
+### Simple: find principal, knowing the interest -> principal 8000
+POST http://localhost:8080/api/simple
+Content-Type: application/json
+
+{
+  "find": "PRINCIPAL",
+  "known": "INTEREST",
+  "interest": 1120,
+  "rate": 7,
+  "time": 2,
+  "unit": 1
+}
+
+### Simple: find rate, knowing the amount -> rate 7
+POST http://localhost:8080/api/simple
+Content-Type: application/json
+
+{
+  "find": "RATE",
+  "known": "AMOUNT",
+  "principal": 8000,
+  "amount": 9120,
+  "time": 2,
+  "unit": 1
+}
+
+### Simple: find time, knowing the interest -> 2 years
+POST http://localhost:8080/api/simple
+Content-Type: application/json
+
+{
+  "find": "TIME",
+  "known": "INTEREST",
+  "principal": 8000,
+  "rate": 7,
+  "interest": 1120
+}
+
+### Compound: find amount, interest added quarterly, 180 days -> amount 10506.25, interest 506.25
+POST http://localhost:8080/api/compound
+Content-Type: application/json
+
+{
+  "find": "AMOUNT",
+  "principal": 10000,
+  "rate": 10,
+  "time": 180,
+  "unit": 4,
+  "timesPerYear": 4
+}
+
+### Compound: find time -> 0.5 years
+POST http://localhost:8080/api/compound
+Content-Type: application/json
+
+{
+  "find": "TIME",
+  "principal": 10000,
+  "amount": 10506.25,
+  "rate": 10,
+  "timesPerYear": 4
+}

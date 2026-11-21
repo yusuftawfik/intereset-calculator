@@ -1,0 +1,105 @@
+### Missing rate -> 400: "Please enter the rate"
+POST http://localhost:8080/api/simple
+Content-Type: application/json
+
+{
+  "find": "AMOUNT",
+  "principal": 8000,
+  "time": 2,
+  "unit": 1
+}
+
+### Several things missing at once -> 400 with a list of messages
+POST http://localhost:8080/api/simple
+Content-Type: application/json
+
+{
+  "find": "RATE"
+}
+
+### Rate of zero -> 400: "Rate must be greater than 0"
+POST http://localhost:8080/api/simple
+Content-Type: application/json
+
+{
+  "find": "AMOUNT",
+  "principal": 8000,
+  "rate": 0,
+  "time": 2,
+  "unit": 1
+}
+
+### Negative principal -> 400: "Principal must be greater than 0"
+POST http://localhost:8080/api/simple
+Content-Type: application/json
+
+{
+  "find": "AMOUNT",
+  "principal": -500,
+  "rate": 7,
+  "time": 2,
+  "unit": 1
+}
+
+### A "find" value that does not exist -> 400: "The request could not be read..."
+POST http://localhost:8080/api/simple
+Content-Type: application/json
+
+{
+  "find": "BANANA",
+  "principal": 8000,
+  "rate": 7,
+  "time": 2,
+  "unit": 1
+}
+
+### Time unit outside 1 to 6 -> 400: "Time unit must be a number from 1 to 6"
+POST http://localhost:8080/api/simple
+Content-Type: application/json
+
+{
+  "find": "AMOUNT",
+  "principal": 8000,
+  "rate": 7,
+  "time": 2,
+  "unit": 9
+}
+
+### Amount smaller than principal when finding the rate -> 400
+POST http://localhost:8080/api/simple
+Content-Type: application/json
+
+{
+  "find": "RATE",
+  "known": "AMOUNT",
+  "principal": 8000,
+  "amount": 7000,
+  "time": 2,
+  "unit": 1
+}
+
+### Compound: timesPerYear not allowed -> 400: "timesPerYear must be 1, 2, 4, 12, 52 or 360"
+POST http://localhost:8080/api/compound
+Content-Type: application/json
+
+{
+  "find": "AMOUNT",
+  "principal": 10000,
+  "rate": 10,
+  "time": 2,
+  "unit": 1,
+  "timesPerYear": 5
+}
+
+### Compound: numbers so big the result can't be shown -> 400: "too big or cannot be calculated"
+POST http://localhost:8080/api/compound
+Content-Type: application/json
+
+{
+  "find": "AMOUNT",
+  "principal": 10000,
+  "rate": 1000,
+  "time": 100000,
+  "unit": 1,
+  "timesPerYear": 360
+}

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Interest Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+
+    <header class="site-header">
+        <div class="brand">
+            <!-- Put the logo file at static/images/cic-logo.png.
+                 Until it is there, the space stays empty (onerror hides the broken icon). -->
+            <img class="logo" src="images/cic-logo.png" alt="Canadian International College"
+                 onerror="this.style.visibility='hidden'">
+            <div class="titles">
+                <h1>Interest Calculator</h1>
+                <p>Simple &amp; compound</p>
+            </div>
+        </div>
+        <div class="rule"></div>
+    </header>
+
+    <!-- Simple or compound -->
+    <div class="tabs">
+        <button type="button" class="tab active" data-type="simple">Simple</button>
+        <button type="button" class="tab" data-type="compound">Compound</button>
+    </div>
+
+    <form id="calc-form" class="card" novalidate>
+
+        <h2>What do you want to find?</h2>
+        <div class="chips four" id="find-chips">
+            <button type="button" class="chip active" data-find="AMOUNT"><span class="sym">S</span> Amount</button>
+            <button type="button" class="chip" data-find="PRINCIPAL"><span class="sym">P</span> Principal</button>
+            <button type="button" class="chip" data-find="RATE"><span class="sym">r</span> Rate</button>
+            <button type="button" class="chip" data-find="TIME"><span class="sym">t</span> Time</button>
+        </div>
+
+        <!-- Only for simple interest, when not finding the amount -->
+        <div id="known-box" hidden>
+            <h2>What do you know?</h2>
+            <div class="chips two" id="known-chips">
+                <button type="button" class="chip active" data-known="INTEREST"><span class="sym">I</span> Interest</button>
+                <button type="button" class="chip" data-known="AMOUNT"><span class="sym">S</span> Amount</button>
+            </div>
+        </div>
+
+        <div class="fields">
+            <div class="field" data-field="principal">
+                <label for="principal"><span class="sym">P</span> Principal</label>
+                <input id="principal" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 8000">
+            </div>
+
+            <div class="field" data-field="rate">
+                <label for="rate"><span class="sym">r</span> Yearly rate (%)</label>
+                <input id="rate" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 7">
+            </div>
+
+            <div class="field" data-field="interest">
+                <label for="interest"><span class="sym">I</span> Interest</label>
+                <input id="interest" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 1120">
+            </div>
+
+            <div class="field" data-field="amount">
+                <label for="amount"><span class="sym">S</span> Amount</label>
+                <input id="amount" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 9120">
+            </div>
+
+            <div class="field" data-field="time">
+                <label for="time"><span class="sym">t</span> Time</label>
+                <div class="row">
+                    <input id="time" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 2">
+                    <select id="unit" aria-label="Time unit">
+                        <option value="1">Years</option>
+                        <option value="2">Months</option>
+                        <option value="3">Weeks</option>
+                        <option value="4">Days (360)</option>
+                        <option value="5">Days (365)</option>
+                        <option value="6">Days (366)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field" data-field="timesPerYear">
+                <label for="timesPerYear"><span class="sym">m</span> Interest added</label>
+                <select id="timesPerYear">
+                    <option value="1">Yearly (1)</option>
+                    <option value="2">Half-yearly (2)</option>
+                    <option value="4">Quarterly (4)</option>
+                    <option value="12">Monthly (12)</option>
+                    <option value="52">Weekly (52)</option>
+                    <option value="360">Daily (360)</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" id="calculate" class="primary">Calculate</button>
+    </form>
+
+    <!-- Problems sent back by the app -->
+    <section id="error" class="card error" hidden aria-live="polite"></section>
+
+    <!-- Steps, then the answer -->
+    <section id="output" class="card" hidden aria-live="polite">
+        <h2>Steps</h2>
+
+        <div class="step" id="step1" hidden>
+            <div class="step-title">1 &middot; The equation</div>
+            <div class="eq" id="eq-symbols"></div>
+        </div>
+
+        <div class="step" id="step2" hidden>
+            <div class="step-title">2 &middot; Put in what we know</div>
+            <div class="eq" id="eq-values"></div>
+        </div>
+
+        <div class="step" id="step3" hidden>
+            <div class="step-title">3 &middot; Calculating <span class="dots"><i></i><i></i><i></i></span></div>
+        </div>
+
+        <div id="result" hidden></div>
+    </section>
+
+    <p class="note">Time given in days uses a 360-day year unless you pick 365 or 366.</p>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

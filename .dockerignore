@@ -1,0 +1,8 @@
+# Files Docker does not need to copy into the build
+target/
+out/
+.git/
+.idea/
+*.iml
+*.http
+PLAN.md
